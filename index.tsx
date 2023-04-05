@@ -114,7 +114,8 @@ export type IProps = {
   validationRegex?: RegExp
   passcodeFallback?: boolean
   vibrationEnabled?: boolean
-  delayBetweenAttempts?: number;
+  delayBetweenAttempts?: number
+  textTimer?: string
 }
 
 export type IState = {
