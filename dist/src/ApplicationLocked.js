@@ -13,7 +13,11 @@ class ApplicationLocked extends React.PureComponent {
         this.renderErrorLocked = () => {
             const minutes = Math.floor(this.state.timeDiff / 1000 / 60);
             const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
-            return (React.createElement(react_native_1.View, { style: { justifyContent: 'center', flexDirection: 'row' } },
+            return (React.createElement(react_native_1.View, { style: {
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                } },
                 this.props.textDescriptionComponent
                     ? this.props.textDescriptionComponent()
                     : null,

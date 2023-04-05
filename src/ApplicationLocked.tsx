@@ -111,7 +111,11 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
     const minutes = Math.floor(this.state.timeDiff / 1000 / 60);
     const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
     return (
-      <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+      <View style={{ 
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+      }}>
         {this.props.textDescriptionComponent
           ? this.props.textDescriptionComponent()
           : null}
