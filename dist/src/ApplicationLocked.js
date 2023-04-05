@@ -19,7 +19,6 @@ class ApplicationLocked extends React.PureComponent {
                     : null,
                 React.createElement(react_native_1.Text, { style: this.props.styleTextTimer },
                     this.props.textTimer,
-                    ":",
                     `${seconds < 10 ? "0" + seconds : seconds}s`)));
         };
         this.state = {

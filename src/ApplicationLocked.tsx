@@ -117,7 +117,7 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
           : null}
         <Text
           style={this.props.styleTextTimer}>
-            {this.props.textTimer}:
+            {this.props.textTimer}
             {`${
               seconds < 10 ? "0" + seconds : seconds
             }s`}
