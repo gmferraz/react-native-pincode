@@ -116,6 +116,7 @@ export type IProps = {
   vibrationEnabled?: boolean
   delayBetweenAttempts?: number
   textTimer?: string
+  textDescriptionComponent?: any
 }
 
 export type IState = {
