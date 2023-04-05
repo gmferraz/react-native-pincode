@@ -5,9 +5,7 @@ const grid_1 = require("./design/grid");
 const delay_1 = require("./delay");
 const utils_1 = require("./utils");
 const async_storage_1 = require("@react-native-community/async-storage");
-const d3_ease_1 = require("d3-ease");
 const React = require("react");
-const Animate_1 = require("react-move/Animate");
 const react_native_1 = require("react-native");
 const MaterialIcons_1 = require("react-native-vector-icons/MaterialIcons");
 class ApplicationLocked extends React.PureComponent {
@@ -28,14 +26,11 @@ class ApplicationLocked extends React.PureComponent {
                     ] }, this.props.textButton)));
         };
         this.renderTimer = (minutes, seconds) => {
-            return (React.createElement(react_native_1.View, { style: [
-                    styles.viewTimer,
-                    this.props.styleViewTimer
-                ] },
-                React.createElement(react_native_1.Text, { style: [
-                        styles.textTimer,
-                        this.props.styleTextTimer
-                    ] }, `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`)));
+            return (React.createElement(react_native_1.View, null,
+                React.createElement(react_native_1.Text, { style: this.props.styleTextTimer },
+                    this.props.textTimer,
+                    ":",
+                    `${seconds < 10 ? "0" + seconds : seconds}s`)));
         };
         this.renderTitle = () => {
             return (React.createElement(react_native_1.Text, { style: [styles.title, this.props.styleTitle] }, this.props.textTitle || "Maximum attempts reached"));
@@ -48,50 +43,13 @@ class ApplicationLocked extends React.PureComponent {
         this.renderErrorLocked = () => {
             const minutes = Math.floor(this.state.timeDiff / 1000 / 60);
             const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
-            return (React.createElement(react_native_1.View, null,
-                React.createElement(Animate_1.default, { show: true, start: {
-                        opacity: 0
-                    }, enter: {
-                        opacity: [1],
-                        timing: { delay: 1000, duration: 1500, ease: d3_ease_1.easeLinear }
-                    } }, (state) => (React.createElement(react_native_1.View, { style: [
-                        styles.viewTextLock,
-                        this.props.styleViewTextLock,
-                        { opacity: state.opacity }
-                    ] },
-                    this.props.titleComponent
-                        ? this.props.titleComponent()
-                        : this.renderTitle(),
-                    this.props.timerComponent
-                        ? this.props.timerComponent()
-                        : this.renderTimer(minutes, seconds),
-                    this.props.iconComponent
-                        ? this.props.iconComponent()
-                        : this.renderIcon(),
-                    React.createElement(react_native_1.Text, { style: [
-                            styles.text,
-                            this.props.styleText
-                        ] }, this.props.textDescription
-                        ? this.props.textDescription
-                        : `To protect your information, access has been locked for ${Math.ceil(this.props.timeToLock / 1000 / 60)} minutes.`),
-                    React.createElement(react_native_1.Text, { style: [
-                            styles.text,
-                            this.props.styleText
-                        ] }, this.props.textSubDescription
-                        ? this.props.textSubDescription
-                        : "Come back later and try again.")))),
-                React.createElement(Animate_1.default, { show: true, start: {
-                        opacity: 0
-                    }, enter: {
-                        opacity: [1],
-                        timing: { delay: 2000, duration: 1500, ease: d3_ease_1.easeLinear }
-                    } }, (state) => (React.createElement(react_native_1.View, { style: { opacity: state.opacity, flex: 1 } },
-                    React.createElement(react_native_1.View, { style: [
-                            styles.viewCloseButton,
-                            this.props.styleViewButton
-                        ] }, this.props.buttonComponent
-                        ? this.props.buttonComponent()
-                        : this.renderButton()))))));
+            return (React.createElement(react_native_1.View, null, (state) => (React.createElement(react_native_1.View, { style: { justifyContent: 'center', flexDirection: 'row' } },
+                this.props.textDescriptionComponent
+                    ? this.props.textDescriptionComponent()
+                    : null,
+                this.props.timerComponent
+                    ? this.props.timerComponent()
+                    : this.renderTimer(minutes, seconds)))));
         };
         this.state = {
             timeDiff: 0
@@ -129,7 +87,6 @@ class ApplicationLocked extends React.PureComponent {
     render() {
         return (React.createElement(react_native_1.View, { style: [
                 styles.container,
-                this.props.styleMainContainer
             ] }, this.renderErrorLocked()));
     }
 }
@@ -138,6 +95,7 @@ ApplicationLocked.defaultProps = {
     styleTextButton: null,
     styleViewTimer: null,
     styleTextTimer: null,
+    textTimer: null,
     styleTitle: null,
     styleViewIcon: null,
     nameIcon: "lock",
@@ -147,19 +105,14 @@ ApplicationLocked.defaultProps = {
     styleText: null,
     styleViewButton: null,
     styleMainContainer: null,
+    textDescriptionComponent: null
 };
 const styles = react_native_1.StyleSheet.create({
     container: {
         position: "absolute",
-        top: 0,
-        backgroundColor: colors_1.colors.background,
-        flexBasis: 0,
-        left: 0,
+        top: 120,
         height: "100%",
         width: "100%",
-        alignItems: "center",
-        flex: 1,
-        justifyContent: "center"
     },
     text: {
         fontSize: grid_1.grid.unit,

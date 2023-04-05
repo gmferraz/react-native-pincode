@@ -28,6 +28,8 @@ export declare type IProps = {
     timeToLock: number;
     timerComponent?: any;
     titleComponent?: any;
+    textDescriptionComponent?: any;
+    textTimer?: string;
 };
 export declare type IState = {
     timeDiff: number;
@@ -40,11 +42,11 @@ declare class ApplicationLocked extends React.PureComponent<IProps, IState> {
     componentDidMount(): void;
     timer(): Promise<void>;
     componentWillUnmount(): void;
-    renderButton: () => any;
-    renderTimer: (minutes: number, seconds: number) => any;
-    renderTitle: () => any;
-    renderIcon: () => any;
-    renderErrorLocked: () => any;
-    render(): any;
+    renderButton: () => JSX.Element;
+    renderTimer: (minutes: number, seconds: number) => JSX.Element;
+    renderTitle: () => JSX.Element;
+    renderIcon: () => JSX.Element;
+    renderErrorLocked: () => JSX.Element;
+    render(): JSX.Element;
 }
 export default ApplicationLocked;
