@@ -4,9 +4,7 @@ import delay from "./delay";
 import { PinResultStatus } from "./utils";
 
 import AsyncStorage from "@react-native-community/async-storage";
-import { easeLinear } from "d3-ease";
 import * as React from "react";
-import Animate from "react-move/Animate";
 import {
   StyleSheet,
   View,
@@ -14,7 +12,6 @@ import {
   Text,
   Platform
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
 
 export type IProps = {
   buttonComponent?: any
@@ -81,8 +78,6 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
     this.isUnmounted = false;
     this.timeLocked = 0;
     this.timer = this.timer.bind(this);
-    this.renderButton = this.renderButton.bind(this);
-    this.renderTitle = this.renderTitle.bind(this);
   }
 
   componentDidMount() {
@@ -112,33 +107,14 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
     this.isUnmounted = true;
   }
 
-  renderButton = () => {
+  renderErrorLocked = () => {
+    const minutes = Math.floor(this.state.timeDiff / 1000 / 60);
+    const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
     return (
-      <TouchableOpacity
-        onPress={() => {
-          if (this.props.onClickButton) {
-            this.props.onClickButton();
-          } else {
-            throw "Quit application";
-          }
-        }}
-        style={[styles.button, this.props.styleButton]}
-        accessible
-        accessibilityLabel={this.props.textButton}>
-        <Text
-          style={[
-            styles.closeButtonText,
-            this.props.styleTextButton
-          ]}>
-          {this.props.textButton}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  renderTimer = (minutes: number, seconds: number) => {
-    return (
-      <View>
+      <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+        {this.props.textDescriptionComponent
+          ? this.props.textDescriptionComponent()
+          : null}
         <Text
           style={this.props.styleTextTimer}>
             {this.props.textTimer}:
@@ -150,57 +126,10 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
     );
   };
 
-  renderTitle = () => {
-    return (
-      <Text
-        style={[ styles.title, this.props.styleTitle]}>
-        {this.props.textTitle || "Maximum attempts reached"}
-      </Text>
-    );
-  };
-
-  renderIcon = () => {
-    return (
-      <View
-        style={
-          [ styles.viewIcon, this.props.styleViewIcon]
-        }>
-        {this.props.lockedIconComponent ?
-          this.props.lockedIconComponent :
-          <Icon
-            name={this.props.nameIcon}
-            size={this.props.sizeIcon}
-            color={this.props.colorIcon}
-          />}
-      </View>
-    );
-  };
-
-  renderErrorLocked = () => {
-    const minutes = Math.floor(this.state.timeDiff / 1000 / 60);
-    const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
-    return (
-      <View>
-        {(state: any) => (
-          <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-            {this.props.textDescriptionComponent
-              ? this.props.textDescriptionComponent()
-              : null}
-            {this.props.timerComponent
-              ? this.props.timerComponent()
-              : this.renderTimer(minutes, seconds)}
-          </View>
-        )}
-      </View>
-    );
-  };
-
   render() {
     return (
       <View
-        style={[
-          styles.container,
-        ]}>
+        style={styles.container}>
         {this.renderErrorLocked()}
       </View>
     );

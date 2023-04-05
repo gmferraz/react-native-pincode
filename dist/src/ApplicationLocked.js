@@ -7,49 +7,20 @@ const utils_1 = require("./utils");
 const async_storage_1 = require("@react-native-community/async-storage");
 const React = require("react");
 const react_native_1 = require("react-native");
-const MaterialIcons_1 = require("react-native-vector-icons/MaterialIcons");
 class ApplicationLocked extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.renderButton = () => {
-            return (React.createElement(react_native_1.TouchableOpacity, { onPress: () => {
-                    if (this.props.onClickButton) {
-                        this.props.onClickButton();
-                    }
-                    else {
-                        throw "Quit application";
-                    }
-                }, style: [styles.button, this.props.styleButton], accessible: true, accessibilityLabel: this.props.textButton },
-                React.createElement(react_native_1.Text, { style: [
-                        styles.closeButtonText,
-                        this.props.styleTextButton
-                    ] }, this.props.textButton)));
-        };
-        this.renderTimer = (minutes, seconds) => {
-            return (React.createElement(react_native_1.View, null,
+        this.renderErrorLocked = () => {
+            const minutes = Math.floor(this.state.timeDiff / 1000 / 60);
+            const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
+            return (React.createElement(react_native_1.View, { style: { justifyContent: 'center', flexDirection: 'row' } },
+                this.props.textDescriptionComponent
+                    ? this.props.textDescriptionComponent()
+                    : null,
                 React.createElement(react_native_1.Text, { style: this.props.styleTextTimer },
                     this.props.textTimer,
                     ":",
                     `${seconds < 10 ? "0" + seconds : seconds}s`)));
-        };
-        this.renderTitle = () => {
-            return (React.createElement(react_native_1.Text, { style: [styles.title, this.props.styleTitle] }, this.props.textTitle || "Maximum attempts reached"));
-        };
-        this.renderIcon = () => {
-            return (React.createElement(react_native_1.View, { style: [styles.viewIcon, this.props.styleViewIcon] }, this.props.lockedIconComponent ?
-                this.props.lockedIconComponent :
-                React.createElement(MaterialIcons_1.default, { name: this.props.nameIcon, size: this.props.sizeIcon, color: this.props.colorIcon })));
-        };
-        this.renderErrorLocked = () => {
-            const minutes = Math.floor(this.state.timeDiff / 1000 / 60);
-            const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
-            return (React.createElement(react_native_1.View, null, (state) => (React.createElement(react_native_1.View, { style: { justifyContent: 'center', flexDirection: 'row' } },
-                this.props.textDescriptionComponent
-                    ? this.props.textDescriptionComponent()
-                    : null,
-                this.props.timerComponent
-                    ? this.props.timerComponent()
-                    : this.renderTimer(minutes, seconds)))));
         };
         this.state = {
             timeDiff: 0
@@ -57,8 +28,6 @@ class ApplicationLocked extends React.PureComponent {
         this.isUnmounted = false;
         this.timeLocked = 0;
         this.timer = this.timer.bind(this);
-        this.renderButton = this.renderButton.bind(this);
-        this.renderTitle = this.renderTitle.bind(this);
     }
     componentDidMount() {
         async_storage_1.default.getItem(this.props.timePinLockedAsyncStorageName).then(val => {
@@ -85,9 +54,7 @@ class ApplicationLocked extends React.PureComponent {
         this.isUnmounted = true;
     }
     render() {
-        return (React.createElement(react_native_1.View, { style: [
-                styles.container,
-            ] }, this.renderErrorLocked()));
+        return (React.createElement(react_native_1.View, { style: styles.container }, this.renderErrorLocked()));
     }
 }
 ApplicationLocked.defaultProps = {
