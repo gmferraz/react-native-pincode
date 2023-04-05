@@ -44,6 +44,8 @@ export type IProps = {
   timeToLock: number
   timerComponent?: any
   titleComponent?: any
+  textDescriptionComponent?: any
+  textTimer?: string
 }
 
 export type IState = {
@@ -56,6 +58,7 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
     styleTextButton: null,
     styleViewTimer: null,
     styleTextTimer: null,
+    textTimer: null,
     styleTitle: null,
     styleViewIcon: null,
     nameIcon: "lock",
@@ -65,7 +68,7 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
     styleText: null,
     styleViewButton: null,
     styleMainContainer: null,
-
+    textDescriptionComponent: null
   }
   timeLocked: number;
   isUnmounted: boolean;
@@ -135,19 +138,13 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
 
   renderTimer = (minutes: number, seconds: number) => {
     return (
-      <View
-        style={[
-          styles.viewTimer,
-          this.props.styleViewTimer
-        ]}>
+      <View>
         <Text
-          style={[
-            styles.textTimer,
-            this.props.styleTextTimer
-          ]}>
-          {`${minutes < 10 ? "0" + minutes : minutes}:${
-            seconds < 10 ? "0" + seconds : seconds
-            }`}
+          style={this.props.styleTextTimer}>
+            {this.props.textTimer}:
+            {`${
+              seconds < 10 ? "0" + seconds : seconds
+            }s`}
         </Text>
       </View>
     );
@@ -184,77 +181,16 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
     const seconds = Math.floor(this.state.timeDiff / 1000) % 60;
     return (
       <View>
-        <Animate
-          show={true}
-          start={{
-            opacity: 0
-          }}
-          enter={{
-            opacity: [1],
-            timing: { delay: 1000, duration: 1500, ease: easeLinear }
-          }}>
-          {(state: any) => (
-            <View
-              style={[
-                styles.viewTextLock,
-                this.props.styleViewTextLock,
-                { opacity: state.opacity }
-              ]}>
-              {this.props.titleComponent
-                ? this.props.titleComponent()
-                : this.renderTitle()}
-              {this.props.timerComponent
-                ? this.props.timerComponent()
-                : this.renderTimer(minutes, seconds)}
-              {this.props.iconComponent
-                ? this.props.iconComponent()
-                : this.renderIcon()}
-              <Text
-                style={[
-                   styles.text,
-                  this.props.styleText
-                ]}>
-                {this.props.textDescription
-                  ? this.props.textDescription
-                  : `To protect your information, access has been locked for ${Math.ceil(
-                    this.props.timeToLock / 1000 / 60
-                  )} minutes.`}
-              </Text>
-              <Text
-              style={[
-                 styles.text,
-                this.props.styleText
-              ]}>
-                {this.props.textSubDescription
-                  ? this.props.textSubDescription
-                  : "Come back later and try again."}
-              </Text>
-            </View>
-          )}
-        </Animate>
-        <Animate
-          show={true}
-          start={{
-            opacity: 0
-          }}
-          enter={{
-            opacity: [1],
-            timing: { delay: 2000, duration: 1500, ease: easeLinear }
-          }}>
-          {(state: any) => (
-            <View style={{ opacity: state.opacity, flex: 1 }}>
-              <View
-                style={[
-                  styles.viewCloseButton,
-                  this.props.styleViewButton
-                ]}>
-                {this.props.buttonComponent
-                  ? this.props.buttonComponent()
-                  : this.renderButton()}
-              </View>
-            </View>
-          )}
-        </Animate>
+        {(state: any) => (
+          <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+            {this.props.textDescriptionComponent
+              ? this.props.textDescriptionComponent()
+              : null}
+            {this.props.timerComponent
+              ? this.props.timerComponent()
+              : this.renderTimer(minutes, seconds)}
+          </View>
+        )}
       </View>
     );
   };
@@ -264,7 +200,6 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
       <View
         style={[
           styles.container,
-          this.props.styleMainContainer
         ]}>
         {this.renderErrorLocked()}
       </View>
@@ -275,15 +210,9 @@ class ApplicationLocked extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 0,
-    backgroundColor: colors.background,
-    flexBasis: 0,
-    left: 0,
+    top: 120,
     height: "100%",
     width: "100%",
-    alignItems: "center",
-    flex: 1,
-    justifyContent: "center"
   },
   text: {
     fontSize: grid.unit,

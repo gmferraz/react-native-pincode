@@ -158,6 +158,7 @@ class PINCode extends React.PureComponent<IProps, IState> {
         changeStatus={this.changeInternalStatus}
         colorIcon={this.props.styleLockScreenColorIcon}
         iconComponent={this.props.iconComponentLockedPage || null}
+        textDescriptionComponent={this.props.textDescriptionComponent || null}
         lockedIconComponent={this.props.lockedIconComponent}
         nameIcon={this.props.styleLockScreenNameIcon}
         onClickButton={this.props.onClickButtonLockedPage || (() => {
@@ -170,6 +171,7 @@ class PINCode extends React.PureComponent<IProps, IState> {
         styleText={this.props.styleLockScreenText}
         styleTextButton={this.props.styleLockScreenTextButton}
         styleTextTimer={this.props.styleLockScreenTextTimer}
+        textTimer={this.props.textTimer}
         styleTitle={this.props.styleLockScreenTitle}
         styleViewButton={this.props.styleLockScreenViewCloseButton}
         styleViewIcon={this.props.styleLockScreenViewIcon}
